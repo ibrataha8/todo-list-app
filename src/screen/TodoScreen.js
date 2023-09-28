@@ -17,8 +17,8 @@ const TodoScreen = () => {
                 alignItems: "center"
             }}>
                 <Text style={{ color: "white", fontWeight: "bold", fontSize: 18, flex: 1 }}>{item.name}</Text>
-                <IconButton icon="pencil" />
-                <IconButton icon="trash-can" />
+                <IconButton icon="pencil" iconColor='blue' />
+                <IconButton icon="trash-can" iconColor='red' />
             </View>
         )
     }
