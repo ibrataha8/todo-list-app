@@ -1,5 +1,7 @@
 # React Native Todo App
 
+**This is a simple TodoList mobile application built using React Native. The app allows you to easily manage your tasks and to-dos, delete and edit your tasks .**
+
 # Installation
 
 #### Step 1 :
