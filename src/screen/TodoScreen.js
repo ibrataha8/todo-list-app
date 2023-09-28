@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import { IconButton } from 'react-native-paper';
+import { View, StyleSheet, Text, TouchableOpacity, FlatList } from 'react-native';
+import { IconButton, TextInput } from 'react-native-paper';
 import Fallback from "../components/Fallback";
 
 const TodoScreen = () => {
@@ -11,10 +11,10 @@ const TodoScreen = () => {
     const [editedTodo, setEditedTodo] = useState([])
     const [showSave, setShowSave] = useState(false)
     const handleAddTodo = () => {
-        // if (todo.trim() == "") {
-        //     alert("Please Write Todo")
-        //     return
-        // }
+        if (todo.trim() == "") {
+            alert("Please Write Todo")
+            return
+        }
         setTodoList([...todoList, { id: Date.now().toString(), title: todo }]);
         setTodo("")
 
@@ -54,29 +54,27 @@ const TodoScreen = () => {
                 alignItems: "center"
             }}>
                 <Text style={{ color: "white", fontWeight: "bold", fontSize: 18, flex: 1 }}>{item.title}</Text>
-                <IconButton icon="pencil" iconColor='blue' onPress={() => handleEditTodo(item)} />
-                <IconButton icon="trash-can" iconColor='red' onPress={() => handleDeleteTodo(item.id)} />
+                <IconButton size={28} icon="pencil" iconColor='blue' onPress={() => handleEditTodo(item)} />
+                <IconButton size={28} icon="trash-can" iconColor='red' onPress={() => handleDeleteTodo(item.id)} />
             </View>
         )
     }
     return (
         <View style={{ marginHorizontal: 16, marginTop: 55 }}>
-            <TextInput style={{
-                borderWidth: 2,
-                borderColor: "blue",
-                borderRadius: 6,
-                paddingHorizontal: 16,
-                paddingVertical: 12
-            }}
-                placeholder='Add A Task'
+            <TextInput
+                label="Add a new Task"
+                mode="outlined"
                 value={todo}
-                onChangeText={(userText) => setTodo(userText)} />
+                onChangeText={(userText) => setTodo(userText)}
+            />
+
+
             {showSave ?
                 <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24 }}
                     onPress={() => handleUpdateTodo()}>
                     <Text style={{ color: "white", fontWeight: "bold", textAlign: "center", fontSize: 20 }}>Save</Text>
                 </TouchableOpacity> :
-                <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24 }}
+                <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24, }}
                     onPress={() => handleAddTodo()}>
                     <Text style={{ color: "white", fontWeight: "bold", textAlign: "center", fontSize: 20 }}>Add</Text>
                 </TouchableOpacity>}
