@@ -27,8 +27,15 @@ cd todoApp
 ```
 npm install
 ```
-
 #### Step 4 :
+
+**Execute the following command in console to start app:**
+
+```
+npm start
+```
+
+#### Step 5 :
 
 **_You can :_**
 
