@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
 import { IconButton } from 'react-native-paper';
-const listTodos = [{ id: 1, name: "brahim" }, { id: 2, name: "Fati" }, { id: 3, name: "mm" }]
+import Fallback from "../components/Fallback";
+
 const TodoScreen = () => {
     const [todo, setTodo] = useState("")
     // Add Todo in Todos
     // Add initial Todo 
     const [todoList, setTodoList] = useState([])
+    const [editedTodo, setEditedTodo] = useState([])
+    const [showSave, setShowSave] = useState(false)
     const handleAddTodo = () => {
+        // if (todo.trim() == "") {
+        //     alert("Please Write Todo")
+        //     return
+        // }
         setTodoList([...todoList, { id: Date.now().toString(), title: todo }]);
         setTodo("")
 
@@ -15,6 +22,23 @@ const TodoScreen = () => {
     const handleDeleteTodo = (id) => {
         const updatedTodo = todoList.filter(todo => todo.id !== id)
         setTodoList(updatedTodo)
+    }
+    const handleEditTodo = (todo) => {
+        setShowSave(true)
+        setEditedTodo(todo)
+        setTodo(todo.title)
+    }
+    const handleUpdateTodo = () => {
+        const updatedTodo = todoList.map(item => {
+            if (item.id === editedTodo.id) {
+                return { ...item, title: todo }
+            }
+            return item
+        })
+        setTodoList(updatedTodo)
+        setEditedTodo(null)
+        setTodo("")
+        setShowSave(false)
     }
 
     const renderTodos = ({ item, index }) => {
@@ -30,7 +54,7 @@ const TodoScreen = () => {
                 alignItems: "center"
             }}>
                 <Text style={{ color: "white", fontWeight: "bold", fontSize: 18, flex: 1 }}>{item.title}</Text>
-                <IconButton icon="pencil" iconColor='blue' />
+                <IconButton icon="pencil" iconColor='blue' onPress={() => handleEditTodo(item)} />
                 <IconButton icon="trash-can" iconColor='red' onPress={() => handleDeleteTodo(item.id)} />
             </View>
         )
@@ -47,16 +71,24 @@ const TodoScreen = () => {
                 placeholder='Add A Task'
                 value={todo}
                 onChangeText={(userText) => setTodo(userText)} />
-            <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24 }}
-                onPress={() => handleAddTodo()}>
-                <Text style={{ color: "white", fontWeight: "bold", textAlign: "center", fontSize: 20 }}>Add</Text>
-            </TouchableOpacity>
+            {showSave ?
+                <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24 }}
+                    onPress={() => handleUpdateTodo()}>
+                    <Text style={{ color: "white", fontWeight: "bold", textAlign: "center", fontSize: 20 }}>Save</Text>
+                </TouchableOpacity> :
+                <TouchableOpacity style={{ backgroundColor: "black", borderRadius: 6, paddingVertical: 10, marginVertical: 24 }}
+                    onPress={() => handleAddTodo()}>
+                    <Text style={{ color: "white", fontWeight: "bold", textAlign: "center", fontSize: 20 }}>Add</Text>
+                </TouchableOpacity>}
+
             {/* Render todo listt */}
-            <FlatList data={todoList} renderItem={renderTodos} />
+            <FlatList
+                style={{ maxHeight: "80%" }}
+                keyExtractor={(item) => item.id} data={todoList} renderItem={renderTodos} />
+            {todoList.length <= 0 && <Fallback />}
         </View>
     );
 }
 
-const styles = StyleSheet.create({})
 
 export default TodoScreen;
